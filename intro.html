@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>INFYRA Event</title>
+
+  <!-- Cursor + Fonts -->
+  <link rel="stylesheet" href="https://unpkg.com/kursor/dist/kursor.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="intro.css"/>
+</head>
+<body>
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="img/updateed.webm" type="video/webm" />
+    <source src="img/updateed.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <button class="hamburger" aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Events</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Team</a></li>
+      </ul>
+      <ul class="mobile-nav-links" id="mobile-menu" hidden>
+        <button class="close-mobile-menu" aria-label="Close navigation">&times;</button>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Events</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Team</a></li>
+      </ul>
+    </nav>
+    <button class="register-btn">REGISTER</button>
+  </header>
+
+  <!-- Main -->
+  <div class="wrapper">
+    <!-- Title -->
+    <h1 class="title">
+      <span class="left">INFY</span><span class="right">RA</span>
+    </h1>
+
+    <!-- Explore -->
+    <a href="temp.html" class="explore-btn">EXPLORE MORE</a>
+
+    <!-- Countdown -->
+    <section class="countdown-section">
+      <h2 class="countdown-title">Event Starts In</h2>
+      <div class="countdown" id="countdown-container">
+        <div class="time-box">
+          <span id="days">00</span>
+          <p>Days</p>
+        </div>
+        <div class="time-box">
+          <span id="hours">00</span>
+          <p>Hours</p>
+        </div>
+        <div class="time-box">
+          <span id="minutes">00</span>
+          <p>Minutes</p>
+        </div>
+        <div class="time-box">
+          <span id="seconds">00</span>
+          <p>Seconds</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Registration Button -->
+    <button id="registration-btn" class="registration-btn">REGISTRATION OPEN</button>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/kursor"></script>
+  <script src="intro.js"></script>
+  <script>
+  new kursor({ type: 3 });
+
+  // ✅ Event Date: 25 September 2025, 00:00:00
+  const eventDate = new Date("Sep 25, 2025 00:00:00").getTime();
+  const registrationBtn = document.getElementById("registration-btn");
+  const countdownContainer = document.getElementById("countdown-container");
+  const topRegisterBtn = document.querySelector(".register-btn");
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const dist = eventDate - now;
+
+    if (dist <= 0) {
+      // 🎯 Event has started
+      countdownContainer.innerHTML = "<h2 style='color:#DA70D6; text-shadow:0 0 12px #8A2BE2;'>REGISTRATION CLOSED</h2>";
+      registrationBtn.style.display = "none"; 
+      topRegisterBtn.style.display = "none";
+      return;
+    }
+
+    const days = Math.floor(dist / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((dist % (1000 * 60)) / 1000);
+
+    document.getElementById("days").textContent = String(days).padStart(2, "0");
+    document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+    document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+    document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+  }
+
+  // Run immediately and update every second
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // Show "REGISTRATION OPEN" after intro animations
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      registrationBtn.classList.add("show");
+    }, 8000);
+  });
+  // Hamburger menu toggle
+  const hamburger = document.querySelector('.hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', !expanded);
+    mobileMenu.hidden = expanded;
+    document.body.classList.toggle('mobile-nav-open', !expanded);
+  });
+
+  // Close button for mobile menu
+  const closeBtn = document.querySelector('.close-mobile-menu');
+  closeBtn.addEventListener('click', () => {
+    hamburger.setAttribute('aria-expanded', false);
+    mobileMenu.hidden = true;
+    document.body.classList.remove('mobile-nav-open');
+  });
+  </script>
+</body>
+</html>
